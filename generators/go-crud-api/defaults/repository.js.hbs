@@ -1,0 +1,66 @@
+package repositories
+
+import (
+"fmt"
+
+"{{ name_repository }}/databases"
+"{{ name_repository }}/models"
+)
+
+func Get{{ properCase name }}s() []models.{{ properCase name }} {
+db := databases.Conn()
+var {{ camelCase name }}s []models.{{ properCase name }}
+db.Find(&{{ camelCase name }}s)
+return {{ camelCase name }}s
+}
+
+func Get{{ properCase name }}ById(id interface{}) ({{ camelCase name }} models.{{ properCase name }}, err error) {
+db := databases.Conn()
+db.First(&{{ camelCase name }}, id)
+
+if {{ camelCase name }}.IsNull() {
+err = fmt.Errorf("{{ properCase name }} id: %s not found", id)
+}
+return {{ camelCase name }}, err
+}
+
+func Create{{ properCase name }}(input{{ properCase name }} models.{{ properCase name }}) models.{{ properCase name }} {
+db := databases.Conn()
+{{ camelCase name }} := input{{ properCase name }}
+db.Create(&{{ camelCase name }})
+
+return {{ camelCase name }}
+}
+
+func Update{{ properCase name }}ById(id interface{}, input{{ properCase name }}
+models.{{ properCase name }})({{ camelCase name }} models.{{ properCase name }}, err error) {
+db := databases.Conn()
+db.First(&{{ camelCase name }}, id)
+
+if {{ camelCase name }}.IsNull() {
+err = fmt.Errorf("{{ properCase name }} id: %s not found", id)
+}
+
+if !{{ camelCase name }}.IsNull() {
+db.Model(&{{ camelCase name }}).Where("id = ?", id).Updates(input{{ properCase name }})
+}
+
+return {{ camelCase name }}, err
+}
+
+func Delete{{ properCase name }}ById(id interface{}) ({{ camelCase name }} models.{{ properCase name }}, isDelete bool,
+err error) {
+db := databases.Conn()
+db.First(&{{ camelCase name }}, id)
+
+if {{ camelCase name }}.IsNull() {
+err = fmt.Errorf("{{ properCase name }} id: %s not found", id)
+}
+
+if !{{ camelCase name }}.IsNull() {
+db.Delete(&{{ camelCase name }}, id)
+isDelete = true
+}
+
+return {{ camelCase name }}, isDelete, err
+}

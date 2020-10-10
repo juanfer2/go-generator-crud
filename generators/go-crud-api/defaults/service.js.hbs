@@ -1,0 +1,33 @@
+package services
+
+import (
+"{{ name_repository }}/models"
+"{{ name_repository }}/repositories"
+)
+
+func Create{{ properCase name }}Service(input{{ properCase name }} models.{{ properCase name }})
+models.{{ properCase name }} {
+return repositories.Create{{ properCase name }}(input{{ properCase name }})
+}
+
+func Get{{ properCase name }}sService() []models.{{ properCase name }} {
+return repositories.Get{{ properCase name }}s()
+}
+
+func Get{{ properCase name }}ByIdService(id interface{}) ({{ camelCase name }} models.{{ properCase name }}, err error)
+{
+{{ camelCase name }}, err = repositories.Get{{ properCase name }}ById(id)
+return {{ camelCase name }}, err
+}
+
+func Update{{ properCase name }}ByIdService(id interface{}, input{{ properCase name }} models.{{ properCase name }})
+({{ camelCase name }} models.{{ properCase name }}, err error) {
+{{ camelCase name }}, err = repositories.Update{{ properCase name }}ById(id, input{{ properCase name }})
+return {{ camelCase name }}, err
+}
+
+func Delete{{ properCase name }}ByIdService(id interface{}) ({{ camelCase name }} models.{{ properCase name }}, isDelete
+bool, err error) {
+{{ camelCase name }}, isDelete, err = repositories.Delete{{ properCase name }}ById(id)
+return {{ camelCase name }}, isDelete, err
+}

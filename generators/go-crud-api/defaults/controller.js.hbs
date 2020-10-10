@@ -1,0 +1,73 @@
+package controllers
+
+import (
+"fmt"
+
+"github.com/gofiber/fiber/v2"
+"{{ name_repository }}/models"
+"{{ name_repository }}/services"
+)
+
+func parserBody{{ properCase name }}(c *fiber.Ctx) models.{{ properCase name }} {
+new{{ properCase name }} := new(models.{{ properCase name }})
+c.BodyParser(new{{ properCase name }})
+return *new{{ properCase name }}
+}
+
+func Create{{ properCase name }}(c *fiber.Ctx) error {
+var input{{ properCase name }} models.{{ properCase name }}
+input{{ properCase name }} = parserBody{{ properCase name }}(c)
+data := services.Create{{ properCase name }}Service(input{{ properCase name }})
+return c.JSON(data)
+}
+
+func Get{{ properCase name }}s(c *fiber.Ctx) error {
+{{ camelCase name }}s := services.Get{{ properCase name }}sService()
+return c.JSON({{ camelCase name }}s)
+
+}
+
+func Get{{ properCase name }}ById(c *fiber.Ctx) error {
+id := c.Params("id")
+{{ camelCase name }}, err := services.Get{{ properCase name }}ByIdService(id)
+
+if err != nil {
+msg := fmt.Sprint(err)
+return c.Status(404).JSON(msg)
+}
+
+return c.JSON({{ camelCase name }})
+}
+
+func Update{{ properCase name }}ById(c *fiber.Ctx) error {
+id := c.Params("id")
+var input{{ properCase name }} models.{{ properCase name }}
+input{{ properCase name }} = parserBody{{ properCase name }}(c)
+{{ camelCase name }}, err := services.Update{{ properCase name }}ByIdService(id, input{{ properCase name }})
+
+if err != nil {
+msg := fmt.Sprint(err)
+return c.Status(404).JSON(msg)
+}
+
+return c.JSON({{ camelCase name }})
+}
+
+func Delete{{ properCase name }}ById(c *fiber.Ctx) error {
+id := c.Params("id")
+msg := ""
+_, isDelete, err := services.Delete{{ properCase name }}ByIdService(id)
+
+if err != nil {
+msg := fmt.Sprint(err)
+return c.Status(404).JSON(msg)
+}
+
+if isDelete {
+msg = fmt.Sprintf("{{ properCase name }} id %s has been deleted", id)
+} else {
+msg = fmt.Sprintf("{{ properCase name }} id %s has not been deleted", id)
+}
+
+return c.JSON(msg)
+}
